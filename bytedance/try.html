@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+   
+    <link rel="stylesheet" type="text/css" href="css/main.min.css"/>
+    
+    <script>
+        var _hmt = _hmt || [];
+        (function () {
+            var hm = document.createElement("script");
+            hm.src = "https://hm.baidu.com/hm.js?3b29c61bda711647d773146cc02ecd6d";
+            var s = document.getElementsByTagName("script")[0];
+            s.parentNode.insertBefore(hm, s);
+        })();
+		function subkey(str,str1){
+			alert(str);
+			document.getElementById("search-keyword").value = str;
+			
+		}
+		
+		function showHint(str){
+			
+			var xmlhttp;
+			if(str.length==0){
+				document.getElementById("txtHint").innerHTML="";
+				return;
+			}
+			
+			if(window.XMLHttpRequest){
+				xmlhttp=new XMLHttpRequest();
+			}
+			
+			xmlhttp.onreadystatechange=function(){
+				
+				if(xmlhttp.readyState==4&&xmlhttp.status==200){
+					
+					var result=eval("("+xmlhttp.responseText+")"); 
+					var i=0;
+					var table;
+					//alert(result.data[1].keyword);
+					for(i=0;i<result.data.length;i++){
+						var x=result.data[i].keyword;
+						
+						table+="<li value="+"result.data[i].keyword"+" onclick=subkey(this.value+'\')>"+
+						result.data[i].keyword+
+						"</li>";
+						
+						
+						
+					}
+					
+					document.getElementById("suggest_detail").innerHTML = table;
+				}
+			}
+			xmlhttp.open("GET","https://i.snssdk.com/search/api/sug/?keyword="+str,true);
+			xmlhttp.send();
+		}
+    </script>
+</head>
+<body class="index">
+
+<div id="content">
+    
+    <div id="logo"><a href="https://m.toutiao.com/search"><img src="logo.png" > </a></div>
+    <div id="site-main">
+        <div id="search-bar">
+            <div id="container">
+                <div id="headline-content">
+                    
+                    <form id="search-form"  action="result.html">
+						
+                        
+						<input class="float-left" id="search-keyword" type="search" onkeyup="showHint(this.value)"/>
+						
+                        <input id="search-form-submit" class="float-right" type="submit" value="搜索">
+						<div id="search_suggest">
+							<ul id="suggest_detail" >
+								
+							</ul>
+						</div>
+                    </form>
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+    
+</div>
+
+</body>
+
+</html>
